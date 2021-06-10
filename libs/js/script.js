@@ -34,3 +34,8 @@ $("#addItem").on("click", () => {
         </tr>`
   );
 });
+
+$("#emptyBasket").on("click", () => {
+  $("#basketTable > tbody").empty();
+  index = 0;
+});
