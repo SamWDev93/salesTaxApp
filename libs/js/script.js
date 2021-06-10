@@ -46,6 +46,8 @@ $("#emptyBasket").on("click", () => {
   index2 = 0;
   salesTax = 0;
   totalAmount = 0;
+  $("#salesTaxAmount").empty();
+  $("#totalAmount").empty();
 });
 
 // Take input from basket and populate receipt
@@ -97,10 +99,80 @@ $("#printReceipt").on("click", () => {
 
         totalAmount += basketItemPrice;
         console.log(totalAmount);
+      } else if (
+        isBookFoodOrMedical.prop("checked") == true &&
+        isImported.prop("checked") == true
+      ) {
+        // Apply 5% tax and round to the nearest 0.05
+
+        // Calculate sales tax
+        salesTax += parseFloat(basketItemPrice) * 0.05;
+
+        // Round tax to the nearest 0.05
+        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+
+        // Make sales tax a float
+        salesTax = parseFloat(salesTax);
+
+        // Calculate item price including sales tax
+        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+
+        // Print item price on receipt
+        $(`#receiptItemPrice${index2}`).html(itemPrice);
+
+        // Increment total amount
+        totalAmount += basketItemPrice;
+      } else if (
+        isBookFoodOrMedical.prop("checked") == false &&
+        isImported.prop("checked") == true
+      ) {
+        // Apply 15% tax and round to the nearest 0.05
+
+        // Calculate sales tax
+        salesTax += parseFloat(basketItemPrice) * 0.15;
+
+        // Round tax to the nearest 0.05
+        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+
+        // Make sales tax a float
+        salesTax = parseFloat(salesTax);
+
+        // Calculate item price including sales tax
+        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+
+        // Print item price on receipt
+        $(`#receiptItemPrice${index2}`).html(itemPrice);
+
+        // Increment total amount
+        totalAmount += basketItemPrice;
+      } else {
+        // Apply 10% tax and round to the nearest 0.05
+
+        // Calculate sales tax
+        salesTax += parseFloat(basketItemPrice) * 0.1;
+
+        // Round tax to the nearest 0.05
+        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+
+        // Make sales tax a float
+        salesTax = parseFloat(salesTax);
+
+        // Calculate item price including sales tax
+        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+
+        // Print item price on receipt
+        $(`#receiptItemPrice${index2}`).html(itemPrice.toFixed(2));
+
+        // Increment total amount
+        totalAmount += basketItemPrice;
       }
     });
 
     // Update sales tax and total amount values
+    totalAmount = parseFloat(totalAmount) + parseFloat(salesTax);
+
+    totalAmount = totalAmount.toFixed(2);
+
     $("#salesTaxAmount").html(salesTax);
     $("#totalAmount").html(totalAmount);
   }
