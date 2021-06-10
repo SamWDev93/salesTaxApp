@@ -1,5 +1,7 @@
 let index = 0;
 index2 = 0;
+salesTax = 0;
+totalAmount = 0;
 
 // Add new item row to basket table
 $("#addItem").on("click", () => {
@@ -39,7 +41,11 @@ $("#addItem").on("click", () => {
 // Empty items from basket table
 $("#emptyBasket").on("click", () => {
   $("#basketTable > tbody").empty();
+  $("#receiptTable > tbody").empty();
   index = 0;
+  index2 = 0;
+  salesTax = 0;
+  totalAmount = 0;
 });
 
 // Take input from basket and populate receipt
@@ -63,6 +69,39 @@ $("#printReceipt").on("click", () => {
                 </td>
             </tr>`
       );
+
+      // Get values from basket table row inputs
+      const basketItemQuantity = $("tr")
+        .find(`#basketItemQuantity${index2}`)
+        .val();
+      const basketItemName = $("tr").find(`#basketItemName${index2}`).val();
+      const basketItemPrice = parseFloat(
+        $("tr").find(`#basketItemPrice${index2}`).val()
+      );
+
+      // Checkbox element variables
+      const isBookFoodOrMedical = $("tr").find(`#isBookFoodOrMedical${index2}`);
+      const isImported = $("tr").find(`#isImported${index2}`);
+
+      // Populate receipt quantities and item names from basket inputs
+      $(`#receiptItemQuantity${index2}`).html(basketItemQuantity);
+      $(`#receiptItemName${index2}`).html(basketItemName);
+
+      // Check if item is book, food, medical or imported
+      if (
+        isBookFoodOrMedical.prop("checked") == true &&
+        isImported.prop("checked") == false
+      ) {
+        // No tax is applied
+        $(`#receiptItemPrice${index2}`).html(basketItemPrice);
+
+        totalAmount += basketItemPrice;
+        console.log(totalAmount);
+      }
     });
+
+    // Update sales tax and total amount values
+    $("#salesTaxAmount").html(salesTax);
+    $("#totalAmount").html(totalAmount);
   }
 });
