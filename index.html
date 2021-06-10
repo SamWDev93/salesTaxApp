@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Tax App</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="./vendor/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="text-center">Sales Tax App</h1>
+
+    <p>
+      Basic sales tax is applicable at a rate of 10% on all goods, except books,
+      food, and medical products that are exempt. Import duty is an additional
+      sales tax applicable on all imported goods at a rate of 5%, with no
+      exemptions. Sales tax is always rounded to the nearest £0.05.<br /><br />
+      When I purchase items I receive a receipt which lists the name of all the
+      items and their price (including tax), finishing with the total cost of
+      the items, and the total amount of sales taxes paid.<br /><br />
+      Write an application that prints out the receipt details for a specified
+      shopping basket.
+    </p>
+
+    <div class="container-fluid">
+      <div class="row p-3">
+        <div class="col-4">
+          <h2>Scenario 1</h2>
+          input
+          <ul>
+            <li>1 book at £12.49</li>
+            <li>1 music CD at £14.99</li>
+            <li>1 chocolate bar at £0.85</li>
+          </ul>
+          output
+          <ul>
+            <li>1 book: £12.49</li>
+            <li>1 music CD: £16.49</li>
+            <li>1 chocolate bar: £0.85</li>
+            <li>Sales Taxes: £1.50</li>
+            <li>Total: £29.83</li>
+          </ul>
+        </div>
+        <div class="col-4">
+          <h2>Scenario 2</h2>
+          input
+          <ul>
+            <li>1 imported box of chocolates at £10.00</li>
+            <li>1 imported bottle of perfume at £47.50</li>
+          </ul>
+          output
+          <ul>
+            <li>1 imported box of chocolates: £10.50</li>
+            <li>1 imported bottle of perfume: £54.65</li>
+            <li>Sales Taxes: £7.65</li>
+            <li>Total: £65.15</li>
+          </ul>
+        </div>
+        <div class="col-4">
+          <h2>Scenario 3</h2>
+          input
+          <ul>
+            <li>1 imported bottle of perfume at £27.99</li>
+            <li>1 bottle of perfume at £18.99</li>
+            <li>1 packet of headache pills at £9.75</li>
+            <li>1 box of imported chocolates at 11.25</li>
+          </ul>
+          output
+          <ul>
+            <li>1 imported bottle of perfume: £32.19</li>
+            <li>1 bottle of perfume: £20.89</li>
+            <li>1 packet of headache pills: £9.75</li>
+            <li>1 imported box of chocolates: £11.85</li>
+            <li>Sales Taxes: £6.70</li>
+            <li>Total: £74.68</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Basket & Receipt Area -->
+    <div class="container-fluid">
+      <div class="row p-3">
+        <!-- Basket Area -->
+        <div class="col-6">
+          <table id="basketTable" class="table">
+            <thead>
+              <th>Item Quantity</th>
+              <th>Item Name</th>
+              <th>Item Price (£ - exc. tax)</th>
+              <th>Book, Food or Medical?</th>
+              <th>Imported?</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="d-flex justify-content-between p-3">
+            <button class="btn btn-danger">Empty Basket</button>
+            <button class="btn btn-success">Add Item</button>
+            <button class="btn btn-primary">Print Receipt</button>
+          </div>
+        </div>
+
+        <!-- Receipt Area -->
+        <div class="col-6"></div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="./vendor/bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="./vendor/jQuery/jquery-3.6.0.min.js"></script>
+
+    <!-- My JS -->
+    <script src="./libs/js/script.js"></script>
+  </body>
+</html>
