@@ -7,13 +7,13 @@ $("#addItem").on("click", () => {
   $("#basketTable > tbody").append(
     `<tr>
             <td>
-                <input type="number" class="form-control" id="basketItemQuantity${index}">
+                <input type="number" class="form-control" id="basketItemQuantity${index}" min="0" max="10">
             </td>
             <td>
                 <input type="text" class="form-control" id="basketItemName${index}">
             </td>
             <td>
-                <input type="number" class="form-control" id="basketItemPrice${index}">
+                <input type="number" class="form-control" id="basketItemPrice${index}" min="0" max="100">
             </td>
             <td>
                 <div class="form-check">
@@ -35,7 +35,16 @@ $("#addItem").on("click", () => {
   );
 });
 
+// Empty items from basket table
 $("#emptyBasket").on("click", () => {
   $("#basketTable > tbody").empty();
   index = 0;
+});
+
+// Take input from basket and populate receipt
+$("#printReceipt").on("click", () => {
+  // basic form validation for empty input fields
+  if ($(".form-control").val() == "" || $(".form-control").val() == " ") {
+    alert("Please fill in all input fields.");
+  }
 });
