@@ -1,4 +1,5 @@
 let index = 0;
+index2 = 0;
 
 // Add new item row to basket table
 $("#addItem").on("click", () => {
@@ -46,5 +47,22 @@ $("#printReceipt").on("click", () => {
   // basic form validation for empty input fields
   if ($(".form-control").val() == "" || $(".form-control").val() == " ") {
     alert("Please fill in all input fields.");
+  } else {
+    // Loop through basket table rows, check values and generate receipt
+    $("#basketTable > tbody > tr").each(() => {
+      index2++;
+
+      // Append new table row to receipt table for every row in basket table
+      $("#receiptTable > tbody").append(
+        `<tr>
+                <td id="receiptItemQuantity${index2}">
+                </td>
+                <td id="receiptItemName${index2}">
+                </td>
+                <td id="receiptItemPrice${index2}">
+                </td>
+            </tr>`
+      );
+    });
   }
 });
