@@ -3,6 +3,33 @@ index2 = 0;
 salesTax = 0;
 totalAmount = 0;
 
+const apply5PercentTax = (itemPrice) => {
+  return parseFloat(itemPrice) * 0.05;
+};
+
+const apply10PercentTax = (itemPrice) => {
+  return parseFloat(itemPrice) * 0.1;
+};
+
+const apply15PercentTax = (itemPrice) => {
+  return parseFloat(itemPrice) * 0.15;
+};
+
+const roundSalesTax = (itemSalesTax) => {
+  return (Math.ceil(itemSalesTax * 20) / 20).toFixed(2);
+};
+
+const itemPriceWithSalesTax = (preTaxItemPrice, itemSalesTax) => {
+  return parseFloat(preTaxItemPrice) + parseFloat(itemSalesTax);
+};
+
+const totalAmountWithSalesTax = (preTaxTotalAmount, totalSalesTax) => {
+  const itemsTotalAmountWithSalesTax =
+    parseFloat(preTaxTotalAmount) + parseFloat(totalSalesTax);
+
+  return itemsTotalAmountWithSalesTax.toFixed(2);
+};
+
 // Add new item row to basket table
 $("#addItem").on("click", () => {
   index++;
@@ -91,77 +118,80 @@ $("#printReceipt").on("click", () => {
 
       // Check if item is book, food, medical or imported
       if (
+        // Item is book, food or medical and is not imported - no tax is applied
         isBookFoodOrMedical.prop("checked") == true &&
         isImported.prop("checked") == false
       ) {
-        // No tax is applied
         $(`#receiptItemPrice${index2}`).html(basketItemPrice);
 
         totalAmount += basketItemPrice;
         console.log(totalAmount);
-      } else if (
+      }
+
+      // Item is book, food or medical and is imported - 5% tax is applied
+      else if (
         isBookFoodOrMedical.prop("checked") == true &&
         isImported.prop("checked") == true
       ) {
-        // Apply 5% tax and round to the nearest 0.05
-
         // Calculate sales tax
-        salesTax += parseFloat(basketItemPrice) * 0.05;
+        salesTax += apply5PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+        salesTax = roundSalesTax(salesTax);
 
         // Make sales tax a float
         salesTax = parseFloat(salesTax);
 
         // Calculate item price including sales tax
-        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
 
         // Print item price on receipt
-        $(`#receiptItemPrice${index2}`).html(itemPrice);
+        $(`#receiptItemPrice${index2}`).html(itemTotalPrice);
 
         // Increment total amount
         totalAmount += basketItemPrice;
-      } else if (
+      }
+
+      // Item is not book, food, medical and is imported - 15% tax is applied
+      else if (
         isBookFoodOrMedical.prop("checked") == false &&
         isImported.prop("checked") == true
       ) {
-        // Apply 15% tax and round to the nearest 0.05
-
         // Calculate sales tax
-        salesTax += parseFloat(basketItemPrice) * 0.15;
+        salesTax += apply15PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+        salesTax = roundSalesTax(salesTax);
 
         // Make sales tax a float
         salesTax = parseFloat(salesTax);
 
         // Calculate item price including sales tax
-        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
 
         // Print item price on receipt
-        $(`#receiptItemPrice${index2}`).html(itemPrice);
+        $(`#receiptItemPrice${index2}`).html(itemTotalPrice);
 
         // Increment total amount
         totalAmount += basketItemPrice;
-      } else {
-        // Apply 10% tax and round to the nearest 0.05
+      }
 
+      // Item is not book, food, medical and is not imported - 10% tax is applied
+      else {
         // Calculate sales tax
-        salesTax += parseFloat(basketItemPrice) * 0.1;
+        salesTax += apply10PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = (Math.ceil(salesTax * 20) / 20).toFixed(2);
+        salesTax = roundSalesTax(salesTax);
 
         // Make sales tax a float
         salesTax = parseFloat(salesTax);
 
         // Calculate item price including sales tax
-        const itemPrice = parseFloat(basketItemPrice) + parseFloat(salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
 
         // Print item price on receipt
-        $(`#receiptItemPrice${index2}`).html(itemPrice.toFixed(2));
+        $(`#receiptItemPrice${index2}`).html(itemTotalPrice.toFixed(2));
 
         // Increment total amount
         totalAmount += basketItemPrice;
@@ -169,11 +199,9 @@ $("#printReceipt").on("click", () => {
     });
 
     // Update sales tax and total amount values
-    totalAmount = parseFloat(totalAmount) + parseFloat(salesTax);
+    totalAmount = totalAmountWithSalesTax(totalAmount, salesTax);
 
-    totalAmount = totalAmount.toFixed(2);
-
-    $("#salesTaxAmount").html(salesTax);
+    $("#salesTaxAmount").html(salesTax.toFixed(2));
     $("#totalAmount").html(totalAmount);
   }
 });
