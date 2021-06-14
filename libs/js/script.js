@@ -1,6 +1,7 @@
 let index = 0;
 index2 = 0;
-salesTax = 0;
+singleItemSalesTax = 0;
+salesTaxTotalAmount = 0;
 totalAmount = 0;
 
 const apply5PercentTax = (itemPrice) => {
@@ -71,7 +72,7 @@ $("#emptyBasket").on("click", () => {
   $("#receiptTable > tbody").empty();
   index = 0;
   index2 = 0;
-  salesTax = 0;
+  salesTaxTotalAmount = 0;
   totalAmount = 0;
   $("#salesTaxAmount").empty();
   $("#totalAmount").empty();
@@ -134,19 +135,25 @@ $("#printReceipt").on("click", () => {
         isImported.prop("checked") == true
       ) {
         // Calculate sales tax
-        salesTax += apply5PercentTax(basketItemPrice);
+        singleItemSalesTax = apply5PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = roundSalesTax(salesTax);
+        singleItemSalesTax = roundSalesTax(singleItemSalesTax);
 
         // Make sales tax a float
-        salesTax = parseFloat(salesTax);
+        singleItemSalesTax = parseFloat(singleItemSalesTax);
 
         // Calculate item price including sales tax
-        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(
+          basketItemPrice,
+          singleItemSalesTax
+        );
 
         // Print item price on receipt
         $(`#receiptItemPrice${index2}`).html(itemTotalPrice);
+
+        // Increment total sales tax
+        salesTaxTotalAmount += singleItemSalesTax;
 
         // Increment total amount
         totalAmount += basketItemPrice;
@@ -158,19 +165,25 @@ $("#printReceipt").on("click", () => {
         isImported.prop("checked") == true
       ) {
         // Calculate sales tax
-        salesTax += apply15PercentTax(basketItemPrice);
+        singleItemSalesTax = apply15PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = roundSalesTax(salesTax);
+        singleItemSalesTax = roundSalesTax(singleItemSalesTax);
 
         // Make sales tax a float
-        salesTax = parseFloat(salesTax);
+        singleItemSalesTax = parseFloat(singleItemSalesTax);
 
         // Calculate item price including sales tax
-        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(
+          basketItemPrice,
+          singleItemSalesTax
+        );
 
         // Print item price on receipt
         $(`#receiptItemPrice${index2}`).html(itemTotalPrice);
+
+        // Increment total sales tax
+        salesTaxTotalAmount += singleItemSalesTax;
 
         // Increment total amount
         totalAmount += basketItemPrice;
@@ -179,19 +192,25 @@ $("#printReceipt").on("click", () => {
       // Item is not book, food, medical and is not imported - 10% tax is applied
       else {
         // Calculate sales tax
-        salesTax += apply10PercentTax(basketItemPrice);
+        singleItemSalesTax = apply10PercentTax(basketItemPrice);
 
         // Round tax to the nearest 0.05
-        salesTax = roundSalesTax(salesTax);
+        singleItemSalesTax = roundSalesTax(singleItemSalesTax);
 
         // Make sales tax a float
-        salesTax = parseFloat(salesTax);
+        singleItemSalesTax = parseFloat(singleItemSalesTax);
 
         // Calculate item price including sales tax
-        const itemTotalPrice = itemPriceWithSalesTax(basketItemPrice, salesTax);
+        const itemTotalPrice = itemPriceWithSalesTax(
+          basketItemPrice,
+          singleItemSalesTax
+        );
 
         // Print item price on receipt
         $(`#receiptItemPrice${index2}`).html(itemTotalPrice.toFixed(2));
+
+        // Increment total sales tax
+        salesTaxTotalAmount += singleItemSalesTax;
 
         // Increment total amount
         totalAmount += basketItemPrice;
@@ -199,9 +218,9 @@ $("#printReceipt").on("click", () => {
     });
 
     // Update sales tax and total amount values
-    totalAmount = totalAmountWithSalesTax(totalAmount, salesTax);
+    totalAmount = totalAmountWithSalesTax(totalAmount, salesTaxTotalAmount);
 
-    $("#salesTaxAmount").html(salesTax.toFixed(2));
+    $("#salesTaxAmount").html(salesTaxTotalAmount.toFixed(2));
     $("#totalAmount").html(totalAmount);
   }
 });
